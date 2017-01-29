@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in extract_text.gemspec
+# Specify your gem's dependencies in deba.gemspec
 gemspec
