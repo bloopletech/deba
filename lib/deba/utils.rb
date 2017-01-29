@@ -8,4 +8,8 @@ class Deba::Utils
   def self.present?(text)
     !blank?(text)
   end
+  
+  def self.normalise(text)
+    text.gsub(/[[:space:]]+/, ' ').gsub(/\A[[:space:]]+/, '').gsub(/[[:space:]]+\Z/, '')
+  end
 end

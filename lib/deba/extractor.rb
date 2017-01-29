@@ -12,9 +12,7 @@ class Deba::Extractor
   def extract
     @blocks = []
     @just_appended_br = false
-
     @text_run = Deba::TextRunner.new(self)
-    @text_run.start(Deba::Paragraph)
 
     process(@doc.root)
 
@@ -23,25 +21,15 @@ class Deba::Extractor
 
   def process(node)
     node_name = node.name.downcase
-    puts "node_name: #{node_name}"
 
     return if node_name == 'head'
-
-    if node.text?
-      puts "node.inner_tex): #{node.inner_text.inspect}"
-      puts "Deba::Utils.present?(node.inner_text): #{Deba::Utils.present?(node.inner_text)}"
-      @text_run << node.inner_text if Deba::Utils.present?(node.inner_text)
-
-      return
-    end
 
     #Handle repeated brs by making a paragraph break
     if node_name == 'br'
       if @just_appended_br
         @just_appended_br = false
 
-        @text_run.finish
-        @text_run.start(Deba::Paragraph)
+        @text_run.break(Deba::Paragraph)
 
         return
       else
@@ -50,24 +38,15 @@ class Deba::Extractor
     elsif @just_appended_br
       @just_appended_br = false
 
-      @text_run << "\n"
+      @text_run << Deba::Break.new
+    end
+
+    if node.text?
+      @text_run << node.inner_text if Deba::Utils.present?(node.inner_text)
 
       return
     end
 
-    #These tags terminate the current paragraph, if present, and start a new paragraph
-    if BLOCK_INITIATING_TAGS.include?(node_name)
-      @text_run.finish
-      @text_run.start(Deba::Paragraph)
-
-      node.children.each { |n| process(n) }
-
-      @text_run.finish
-      @text_run.start(Deba::Paragraph)
-
-      return
-    end
-    
     if ENHANCERS.keys.flatten.include?(node_name)
       ENHANCERS.each_pair do |tags, nsf_rep|
         if tags.include?(node_name)
@@ -79,15 +58,20 @@ class Deba::Extractor
 
       return
     end
+
+    #These tags terminate the current paragraph, if present, and start a new paragraph
+    if BLOCK_INITIATING_TAGS.include?(node_name)
+      @text_run.break(Deba::Paragraph)
+      node.children.each { |n| process(n) }
+      @text_run.break(Deba::Paragraph)
+
+      return
+    end
     
     if HEADING_TAGS.include?(node_name)
-      @text_run.finish
-      @text_run.start(Deba::Heading, node_name[1..-1].to_i)
-
+      @text_run.break(Deba::Heading, node_name[1..-1].to_i)
       node.children.each { |n| process(n) }
-
-      @text_run.finish
-      @text_run.start(Deba::Paragraph)
+      @text_run.break(Deba::Paragraph)
 
       return
     end

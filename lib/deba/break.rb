@@ -1,0 +1,2 @@
+class Deba::Break
+end
