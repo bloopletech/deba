@@ -8,7 +8,7 @@ class Deba::Extractor
   def initialize(text)
     @doc = Nokogiri::HTML(text)
   end
-  
+
   def extract
     @blocks = []
     @just_appended_br = false
@@ -29,7 +29,7 @@ class Deba::Extractor
       if @just_appended_br
         @just_appended_br = false
 
-        @text_run.break(Deba::Paragraph)
+        @text_run.break
 
         return
       else
@@ -63,15 +63,15 @@ class Deba::Extractor
     if BLOCK_INITIATING_TAGS.include?(node_name)
       @text_run.break(Deba::Paragraph)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @text_run.break
 
       return
     end
-    
+
     if HEADING_TAGS.include?(node_name)
       @text_run.break(Deba::Heading, node_name[1..-1].to_i)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @text_run.break
 
       return
     end
