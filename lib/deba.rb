@@ -1,7 +1,7 @@
 require "nokogiri"
 
 module Deba
-  VERSION = "0.5.0"
+  VERSION = "0.6.0"
 end
 
 require "deba/utils"
@@ -15,6 +15,10 @@ require "deba/extractor"
 
 module Deba
   def self.extract(html)
+    document(html).to_s
+  end
+
+  def self.document(html)
     Deba::Extractor.new(html.is_a?(Nokogiri::XML::Node) ? html : Nokogiri.HTML(html)).extract
   end
 end
