@@ -5,8 +5,8 @@ class Deba::Extractor
 
   attr_reader :blocks
 
-  def initialize(node)
-    @node = node
+  def initialize(doc)
+    @node = doc.root
   end
 
   def extract

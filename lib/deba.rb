@@ -15,6 +15,6 @@ require "deba/extractor"
 
 module Deba
   def self.extract(html)
-    Deba::Extractor.new(html.is_a?(Nokogiri::XML::Node) ? html : Nokogiri::HTML(html)).extract
+    Deba::Extractor.new(html.is_a?(Nokogiri::XML::Node) ? html : Nokogiri.HTML(html)).extract
   end
 end
