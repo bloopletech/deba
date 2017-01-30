@@ -5,18 +5,18 @@ class Deba::Extractor
 
   attr_reader :blocks
 
-  def initialize(doc)
-    @doc = doc
+  def initialize(node)
+    @node = node
   end
 
   def extract
-    @blocks = []
     @just_appended_br = false
-    @text_run = Deba::TextRunner.new(self)
+    @document = Deba::Document.new
+    @text_run = Deba::TextRunner.new(@document)
 
-    process(@doc.root)
+    process(@node)
 
-    @blocks.map { |block| block.to_s }.join
+    @document
   end
 
   def process(node)

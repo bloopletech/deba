@@ -1,6 +1,6 @@
 class Deba::TextRunner
-  def initialize(extractor)
-    @extractor = extractor
+  def initialize(document)
+    @document = document
 
     start
   end
@@ -9,22 +9,22 @@ class Deba::TextRunner
     @segments << segment
   end
 
-  def break(block_type = Deba::Paragraph, param = nil)
+  def break(*args)
     finish
-    start(block_type, param)
+    start(*args)
   end
 
   def finish
     return unless present?
 
-    block = @param.nil? ? @block_type.new(@segments) : @block_type.new(@segments, @param)
-    @extractor.blocks << block
+    @args.unshift(@segments)
+    @document << @block_type.new(*@args)
   end
 
-  def start(block_type = Deba::Paragraph, param = nil)
+  def start(*args)
     @segments = []
-    @block_type = block_type
-    @param = param
+    @block_type = args.shift
+    @args = args
   end
 
   def present?

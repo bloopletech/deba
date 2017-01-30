@@ -6,6 +6,7 @@ end
 
 require "deba/utils"
 require "deba/stringifier"
+require "deba/document"
 require "deba/break"
 require "deba/heading"
 require "deba/paragraph"
