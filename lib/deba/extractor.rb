@@ -16,7 +16,7 @@ class Deba::Extractor
 
     process(@doc.root)
 
-    @blocks
+    @blocks.map { |block| block.to_s }.join
   end
 
   def process(node)
