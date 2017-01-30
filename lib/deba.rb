@@ -1,9 +1,9 @@
 require "nokogiri"
 
 module Deba
+  VERSION = "0.2.0"
 end
 
-require "deba/version"
 require "deba/utils"
 require "deba/stringifier"
 require "deba/break"
