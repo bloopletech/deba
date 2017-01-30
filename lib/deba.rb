@@ -1,7 +1,6 @@
 require "nokogiri"
 
 module Deba
-  # Your code goes here...
 end
 
 require "deba/version"
@@ -13,4 +12,8 @@ require "deba/paragraph"
 require "deba/text_runner"
 require "deba/extractor"
 
-
+module Deba
+  def self.extract(html)
+    Deba::Extractor.new(html.is_a?(Nokogiri::XML::Node) ? html : Nokogiri::HTML(html)).extract
+  end
+end

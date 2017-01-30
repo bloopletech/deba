@@ -5,8 +5,8 @@ class Deba::Extractor
 
   attr_reader :blocks
 
-  def initialize(text)
-    @doc = Nokogiri::HTML(text)
+  def initialize(doc)
+    @doc = doc
   end
 
   def extract
