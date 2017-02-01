@@ -10,6 +10,6 @@ class Deba::Document
   end
 
   def to_s
-    @blocks.map { |block| block.to_s }.join.strip
+    @blocks.map { |block| block.to_s }.join.chomp("\n")
   end
 end
