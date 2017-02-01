@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "deba"
+
+print Deba.extract(File.read(ARGV.first))
