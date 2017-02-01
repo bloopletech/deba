@@ -34,7 +34,7 @@ class Deba::Extractor
       if @just_appended_br
         @just_appended_br = false
 
-        @text_run.break(Deba::Paragraph)
+        @text_run.break(Deba::Paragraph, line_prefix(node))
 
         return
       else
@@ -67,18 +67,18 @@ class Deba::Extractor
     if node_name == 'li'
       last_item = node.xpath('count(following-sibling::li)').to_i == 0
       index = node.xpath('boolean(ancestor::ol)') ? (node.xpath('count(preceding-sibling::li)').to_i + 1) : nil
-      @text_run.break(Deba::ListItem, last_item, index)
+      @text_run.break(Deba::ListItem, line_prefix(node), last_item, index)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @text_run.break(Deba::Paragraph, line_prefix(node))
 
       return
     end
 
     #These tags terminate the current paragraph, if present, and start a new paragraph
     if BLOCK_INITIATING_TAGS.include?(node_name)
-      @text_run.break(Deba::Paragraph)
+      @text_run.break(Deba::Paragraph, line_prefix(node))
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @text_run.break(Deba::Paragraph, line_prefix(node))
 
       return
     end
@@ -86,12 +86,20 @@ class Deba::Extractor
     if HEADING_TAGS.include?(node_name)
       @text_run.break(Deba::Heading, node_name[1..-1].to_i)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @text_run.break(Deba::Paragraph, line_prefix(node))
 
       return
     end
 
     #Pretend that the children of this node were siblings of this node (move them one level up the tree)
     node.children.each { |n| process(n) }
+  end
+
+  def line_prefix(node)
+    if node.xpath('boolean(ancestor::blockquote)')
+      Deba::Blockquote.new
+    else
+      nil
+    end
   end
 end

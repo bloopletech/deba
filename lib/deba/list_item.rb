@@ -1,8 +1,9 @@
 class Deba::ListItem
   attr_reader :segments
 
-  def initialize(segments, last, index)
+  def initialize(segments, line_prefix, last, index)
     @segments = segments
+    @line_prefix = line_prefix
     @last = last
     @index = index
   end
@@ -14,6 +15,12 @@ class Deba::ListItem
       "#{@index}. "
     end
 
-    "#{prefix}#{Deba::Stringifier.new(@segments).stringify}\n#{"\n" if @last}"
+    options = {
+      prefix: prefix,
+      subsequent_line_prefix: " " * prefix.length,
+      line_prefix: @line_prefix
+    }
+
+    "#{Deba::Stringifier.new(@segments, options).stringify}\n#{"\n" if @last}"
   end
 end
