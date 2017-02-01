@@ -15,11 +15,12 @@ require "deba/text_runner"
 require "deba/extractor"
 
 module Deba
-  def self.extract(html)
-    document(html).to_s
+  def self.extract(html, options = {})
+    document(html, options).to_s
   end
 
-  def self.document(html)
-    Deba::Extractor.new(html.is_a?(Nokogiri::XML::Node) ? html : Nokogiri.HTML(html)).extract
+  def self.document(html, options = {})
+    doc = html.is_a?(Nokogiri::XML::Node) ? html : Nokogiri.HTML(html)
+    Deba::Extractor.new(doc, options).extract
   end
 end

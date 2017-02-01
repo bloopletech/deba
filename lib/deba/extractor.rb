@@ -5,8 +5,9 @@ class Deba::Extractor
 
   attr_reader :blocks
 
-  def initialize(doc)
+  def initialize(doc, options = {})
     @node = doc.root
+    @options = options
   end
 
   def extract
@@ -20,6 +21,10 @@ class Deba::Extractor
   end
 
   def process(node)
+    if @options.key?(:exclude)
+      return if Array(@options[:exclude]).any? { |selector| node.matches?(selector) }
+    end
+
     node_name = node.name.downcase
 
     return if node_name == 'head'
