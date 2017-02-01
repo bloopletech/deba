@@ -1,7 +1,7 @@
 class Deba::Stringifier
-  def initialize(segments, options = {})
+  def initialize(segments, line_prefix = nil)
     @segments = segments
-    @options = options
+    @line_prefix = line_prefix
   end
 
   def stringify
@@ -21,18 +21,8 @@ class Deba::Stringifier
   end
 
   def prefix(text)
-    if @options.key?(:prefix)
-      text.gsub!(/\A/s, @options[:prefix].to_s)
-    end
+    return text if @line_prefix.nil?
 
-    if @options.key?(:subsequent_line_prefix)
-      text.gsub!(/(?<=\n)^/, @options[:subsequent_line_prefix].to_s)
-    end
-
-    if @options.key?(:line_prefix)
-      text.gsub!(/^/, @options[:line_prefix].to_s)
-    end
-
-    text
+    text.gsub(/^/, @line_prefix.to_s)
   end
 end

@@ -15,12 +15,8 @@ class Deba::ListItem
       "#{@index}. "
     end
 
-    options = {
-      prefix: prefix,
-      subsequent_line_prefix: " " * prefix.length,
-      line_prefix: @line_prefix
-    }
+    @segments.unshift(prefix)
 
-    "#{Deba::Stringifier.new(@segments, options).stringify}\n#{"\n" if @last}"
+    "#{Deba::Stringifier.new(@segments, @line_prefix).stringify}\n#{"\n" if @last}"
   end
 end

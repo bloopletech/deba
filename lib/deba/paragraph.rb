@@ -7,6 +7,6 @@ class Deba::Paragraph
   end
 
   def to_s
-    "#{Deba::Stringifier.new(@segments, line_prefix: @line_prefix).stringify}\n\n"
+    "#{Deba::Stringifier.new(@segments, @line_prefix).stringify}\n\n"
   end
 end
