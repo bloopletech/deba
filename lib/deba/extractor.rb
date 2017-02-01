@@ -1,7 +1,7 @@
 class Deba::Extractor
   HEADING_TAGS = %w(h1 h2 h3 h4 h5 h6)
   BLOCK_INITIATING_TAGS = %w(article aside body blockquote dd dt header li nav ol p pre section td th ul)
-  ENHANCERS = { %w(b strong) => "*", %(i em) => "_" }
+  ENHANCERS = { %w(b strong) => "*", %w(i em) => "_" }
 
   attr_reader :blocks
 
