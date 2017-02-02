@@ -74,6 +74,23 @@ class Deba::Extractor
       return
     end
 
+    if node_name == 'dt'
+      @text_run.break(Deba::DefinitionTerm, line_prefix(node))
+      node.children.each { |n| process(n) }
+      @text_run.break(Deba::Paragraph, line_prefix(node))
+
+      return
+    end
+
+    if node_name == 'dd'
+      last_item = node.xpath('count(following-sibling::dd)').to_i == 0
+      @text_run.break(Deba::DefinitionDescription, line_prefix(node), last_item)
+      node.children.each { |n| process(n) }
+      @text_run.break(Deba::Paragraph, line_prefix(node))
+
+      return
+    end
+
     #These tags terminate the current paragraph, if present, and start a new paragraph
     if BLOCK_INITIATING_TAGS.include?(node_name)
       @text_run.break(Deba::Paragraph, line_prefix(node))
