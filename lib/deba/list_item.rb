@@ -9,14 +9,14 @@ class Deba::ListItem
   end
 
   def to_s
-    prefix = if @index.nil?
+    "#{Deba::Stringifier.new([prefix] + @segments, @line_prefix).stringify}\n#{"\n" if @last}"
+  end
+
+  def prefix
+    if @index.nil?
       "* "
     else
       "#{@index}. "
     end
-
-    @segments.unshift(prefix)
-
-    "#{Deba::Stringifier.new(@segments, @line_prefix).stringify}\n#{"\n" if @last}"
   end
 end
