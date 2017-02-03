@@ -1,12 +1,11 @@
 class Deba::Paragraph
   attr_reader :segments
 
-  def initialize(segments, line_prefix)
+  def initialize(segments)
     @segments = segments
-    @line_prefix = line_prefix
   end
 
   def to_s
-    "#{Deba::Stringifier.new(@segments, @line_prefix).stringify}\n\n"
+    "#{Deba::Stringifier.new(@segments).stringify}\n\n"
   end
 end
