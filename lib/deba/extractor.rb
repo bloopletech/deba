@@ -13,11 +13,11 @@ class Deba::Extractor
   def extract
     @just_appended_br = false
     @in_blockquote = false
-    @text_run = Deba::TextRunner.new(self)
+    @document = Deba::Document.new(self)
 
     process(@node)
 
-    @text_run.document.chomp("\n")
+    @document.content.chomp("\n")
   end
 
   def process(node)
@@ -34,7 +34,7 @@ class Deba::Extractor
       if @just_appended_br
         @just_appended_br = false
 
-        @text_run.break(Deba::Paragraph)
+        @document.break(Deba::Paragraph)
 
         return
       else
@@ -43,11 +43,11 @@ class Deba::Extractor
     elsif @just_appended_br
       @just_appended_br = false
 
-      @text_run << "\n"
+      @document << "\n"
     end
 
     if node.text?
-      @text_run << Deba::Span.new(node.inner_text) if Deba::Utils.present?(node.inner_text)
+      @document << Deba::Span.new(node.inner_text) if Deba::Utils.present?(node.inner_text)
 
       return
     end
@@ -55,9 +55,9 @@ class Deba::Extractor
     if ENHANCERS.keys.flatten.include?(node_name)
       ENHANCERS.each_pair do |tags, nsf_rep|
         if tags.include?(node_name)
-          @text_run << nsf_rep
+          @document << nsf_rep
           node.children.each { |n| process(n) }
-          @text_run << nsf_rep
+          @document << nsf_rep
         end
       end
 
@@ -67,9 +67,9 @@ class Deba::Extractor
     if node_name == 'blockquote'
       @in_blockquote = true
 
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
 
       @in_blockquote = false
 
@@ -80,43 +80,43 @@ class Deba::Extractor
       last_item = node.xpath('count(following-sibling::li)').to_i == 0
       index = node.xpath('boolean(ancestor::ol)') ? (node.xpath('count(preceding-sibling::li)').to_i + 1) : nil
       
-      @text_run.break(Deba::ListItem, last_item, index)
+      @document.break(Deba::ListItem, last_item, index)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
 
       return
     end
 
     if node_name == 'dt'
-      @text_run.break(Deba::DefinitionTerm)
+      @document.break(Deba::DefinitionTerm)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
 
       return
     end
 
     if node_name == 'dd'
       last_item = node.xpath('count(following-sibling::dd)').to_i == 0
-      @text_run.break(Deba::DefinitionDescription, last_item)
+      @document.break(Deba::DefinitionDescription, last_item)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
 
       return
     end
 
     #These tags terminate the current paragraph, if present, and start a new paragraph
     if BLOCK_INITIATING_TAGS.include?(node_name)
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
 
       return
     end
 
     if HEADING_TAGS.include?(node_name)
-      @text_run.break(Deba::Heading, node_name[1..-1].to_i)
+      @document.break(Deba::Heading, node_name[1..-1].to_i)
       node.children.each { |n| process(n) }
-      @text_run.break(Deba::Paragraph)
+      @document.break(Deba::Paragraph)
 
       return
     end

@@ -1,9 +1,9 @@
-class Deba::TextRunner
-  attr_reader :document
+class Deba::Document
+  attr_reader :content
 
   def initialize(extractor)
     @extractor = extractor
-    @document = ""
+    @content = ""
 
     start
   end
@@ -21,10 +21,10 @@ class Deba::TextRunner
     return unless present?
 
     @args.unshift(@segments)
-    content = @block_type.new(*@args).to_a
-    content.unshift("> ") if @extractor.in_blockquote?
+    block = @block_type.new(*@args).to_a
+    block.unshift("> ") if @extractor.in_blockquote?
 
-    @document << Deba::Stringifier.new(content).stringify
+    @content << Deba::Stringifier.new(block).stringify
   end
 
   def start(*args)

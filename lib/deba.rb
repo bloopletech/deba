@@ -12,7 +12,7 @@ require "deba/list_item"
 require "deba/definition_term"
 require "deba/definition_description"
 require "deba/paragraph"
-require "deba/text_runner"
+require "deba/document"
 require "deba/extractor"
 
 module Deba
