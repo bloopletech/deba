@@ -1,11 +1,13 @@
 class Deba::Paragraph
-  attr_reader :segments
-
   def initialize(segments)
     @segments = segments
   end
 
-  def to_s
-    "#{Deba::Stringifier.new(@segments).stringify}\n\n"
+  def always?
+    false
+  end
+
+  def to_a
+    @segments + ["\n\n"]
   end
 end

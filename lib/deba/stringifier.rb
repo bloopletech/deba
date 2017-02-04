@@ -7,10 +7,10 @@ class Deba::Stringifier
     chunks = @segments.chunk { |segment| segment.class }
 
     chunks.map do |type, chunk_segments|
-      if type == String
-        Deba::Utils.normalise(chunk_segments.join)
+      if type == Deba::Span
+        Deba::Utils.normalise(chunk_segments.map { |s| s.to_s }.join)
       else
-        chunk_segments.map { |s| s.to_s }.join
+        chunk_segments.join
       end
     end.join
   end
