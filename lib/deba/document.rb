@@ -22,20 +22,22 @@ class Deba::Document
   def finish
     return unless present?
 
-    @args.unshift(@segments)
-    block = @block_type.new(*@args).to_a
-    block.unshift(BLOCKQUOTE) if @extractor.in_blockquote?
-
-    @content << Deba::Stringifier.new(block).stringify
+    @content << BLOCKQUOTE if @extractor.in_blockquote?
+    @content << block_content
   end
 
   def start(*args)
     @segments = []
-    @block_type = args.shift
     @args = args
   end
 
   def present?
     @segments.any? { |segment| segment.is_a?(Deba::Span) && Deba::Utils.present?(segment.to_s) }
+  end
+
+  def block_content
+    block_type = @args.shift
+    @args.unshift(@segments)
+    Deba::Stringifier.new(block_type.new(*@args).to_a).stringify
   end
 end
