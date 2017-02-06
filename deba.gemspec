@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Brenton \"B-Train\" Fletcher"]
   spec.email         = ["i@bloople.net"]
 
-  spec.summary       = %q{Fillet HTML using this Deba knife to extract the juicy text content}
-  spec.description   = %q{Deba takes a HTML document or fragment and extracts the text content into a plaintext format that is a strict subset of markdown.}
+  spec.summary       = "Fillet HTML using this Deba knife to extract the juicy text content"
+  spec.description   = "Deba takes a HTML document or fragment and extracts the textual content into a plaintext format that is easy for humans to read."
   spec.homepage      = "http://example.com"
   spec.license       = "MIT"
 
