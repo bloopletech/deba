@@ -1,7 +1,34 @@
 class Deba::Extractor
   HEADING_TAGS = %w(h1 h2 h3 h4 h5 h6)
-  BLOCK_INITIATING_TAGS = %w(article aside body blockquote div dd dt header li nav ol p pre section td th ul)
+  BLOCK_INITIATING_TAGS = %w(
+    address
+    article
+    aside
+    body
+    blockquote
+    div
+    dd
+    dl
+    dt
+    figure
+    footer
+    header
+    li
+    main
+    nav
+    ol
+    p
+    pre
+    section
+    td
+    th
+    ul)
   ENHANCERS = { %w(b strong) => "*", %w(i em) => "_" }
+  SKIP_TAGS = %w(
+    head
+    style
+    script
+  )
 
   attr_reader :blocks
 
@@ -27,7 +54,7 @@ class Deba::Extractor
 
     node_name = node.name.downcase
 
-    return if node_name == 'head'
+    return if SKIP_TAGS.include?(node_name)
 
     #Handle repeated brs by making a paragraph break
     if node_name == 'br'
