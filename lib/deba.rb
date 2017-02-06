@@ -1,7 +1,7 @@
 require "nokogiri"
 
 module Deba
-  VERSION = "0.11.0"
+  VERSION = "0.12.0"
 end
 
 require "deba/utils"
