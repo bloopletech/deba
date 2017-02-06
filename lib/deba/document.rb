@@ -1,4 +1,6 @@
 class Deba::Document
+  BLOCKQUOTE = "> "
+
   attr_reader :content
 
   def initialize(extractor)
@@ -22,7 +24,7 @@ class Deba::Document
 
     @args.unshift(@segments)
     block = @block_type.new(*@args).to_a
-    block.unshift("> ") if @extractor.in_blockquote?
+    block.unshift(BLOCKQUOTE) if @extractor.in_blockquote?
 
     @content << Deba::Stringifier.new(block).stringify
   end
