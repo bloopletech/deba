@@ -106,7 +106,7 @@ class Deba::Extractor
     if node_name == 'li'
       last_item = node.xpath('count(following-sibling::li)').to_i == 0
       index = node.xpath('boolean(ancestor::ol)') ? (node.xpath('count(preceding-sibling::li)').to_i + 1) : nil
-      
+
       @document.break(Deba::ListItem, last_item, index)
       node.children.each { |n| process(n) }
       @document.break(Deba::Paragraph)
