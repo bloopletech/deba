@@ -3,10 +3,6 @@ class Deba::Paragraph
     @segments = segments
   end
 
-  def always?
-    false
-  end
-
   def to_a
     @segments + ["\n\n"]
   end
