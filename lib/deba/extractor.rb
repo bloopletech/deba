@@ -82,9 +82,9 @@ class Deba::Extractor
     if ENHANCERS.keys.flatten.include?(node_name)
       ENHANCERS.each_pair do |tags, nsf_rep|
         if tags.include?(node_name)
-          @document << nsf_rep
+          @document << Deba::Span.new(nsf_rep)
           node.children.each { |n| process(n) }
-          @document << nsf_rep
+          @document << Deba::Span.new(nsf_rep)
         end
       end
 

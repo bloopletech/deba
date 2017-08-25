@@ -5,6 +5,6 @@ class Deba::Heading
   end
 
   def to_a
-    ["#" * @level] + @segments + ["\n\n"]
+    ["#{"#" * @level} "] + @segments + ["\n\n"]
   end
 end
